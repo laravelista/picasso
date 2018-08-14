@@ -1,0 +1,33 @@
+{
+    "name": "laravelista/picasso",
+    "description": "Laravel Image Management and Optimization Package",
+    "keywords": ["laravel", "image"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mario Bašić",
+            "email": "mario@laravelista.hr",
+            "homepage": "https://laravelista.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Laravelista\\Picasso\\": "src/"
+        }
+    },
+    "require": {
+        "illuminate/support": "5.*",
+        "illuminate/database": "5.*",
+        "intervention/image": "^2.4"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Laravelista\\Picasso\\ServiceProvider"
+            ],
+            "aliases": {
+                "Picasso": "Laravelista\\Picasso\\Facade"
+            }
+        }
+    }
+}
