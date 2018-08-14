@@ -10,7 +10,7 @@ To reduce site size and improve site loading time, this packages enables you to:
 
 - resize image to multiple dimensions; _[width x height with upscale]_ ('news_thumbnail', 'news_gallery', 'news_cover', ...)
 - retrieve optimized image for specific position `get('news_cover')`
-- apply watermark on images that need it
+- apply watermark on images that need it **(task in progress)**
 - quickly change the image dimension and update all, subset or a single image with optimized size
 - implement this package in any phase of your application
 - to use this package on your whole site or just a part of it
