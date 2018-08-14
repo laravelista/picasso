@@ -42,6 +42,12 @@ Publish the config file `picasso.php` to your `/config` directory:
 php artisan vendor:publish --provider="Laravelista\Picasso\ServiceProvider" --tag=config
 ```
 
+Migrate the database with:
+
+```
+php artisan migrate
+```
+
 Installation complete!
 
 ## Configuration
