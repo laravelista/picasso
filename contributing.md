@@ -9,9 +9,11 @@ This projects uses the [Forking Workflow](https://www.atlassian.com/git/tutorial
 
 ## Branch Merge Strategy
 
+```
 feature -> develop
 bugfix -> develop
 feature -> develop
 hotfix -> master
+```
 
 See [Gitflow Workflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) for an explanation.
