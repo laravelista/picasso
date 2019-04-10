@@ -5,6 +5,7 @@ namespace Laravelista\Picasso;
 use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Arr;
 
 class Picasso
 {
@@ -55,7 +56,7 @@ class Picasso
      */
     protected function checkDimension($dimension)
     {
-        if (!$this->isValidDimension($dimension)) {
+        if (!Arr::has($this->dimensions, $dimension)) {
             throw new \Exception('Dimension not valid. Check `config/picasso.php` for supported dimensions.');
         }
     }
@@ -80,10 +81,11 @@ class Picasso
         $optimizedImage = $this->manager
             ->make($this->getImageFromStorage($image, $disk))
             ->fit(
-                $this->dimensions[$dimension]['width'],
-                $this->dimensions[$dimension]['height']
+                Arr::get($this->dimensions, $dimension . '.width'),
+                Arr::get($this->dimensions, $dimension . '.height')
             )
-            ->encode('jpg', $this->quality);
+            ->encode('jpg', $this->quality)
+            ->__toString();
 
         $optimizedImageName = $this->getOptimizedImageName($image, $dimension);
 
@@ -108,7 +110,7 @@ class Picasso
      * @param string $dimension
      * @return string
      */
-    protected function getOptimizedImageName(string $image, string $dimension) : string
+    protected function getOptimizedImageName(string $image, string $dimension): string
     {
         return "$image-$dimension.jpg";
     }
@@ -133,25 +135,6 @@ class Picasso
     }
 
     /**
-     * @param string|array $dimension
-     * @return bool
-     */
-    protected function isValidDimension($dimension) : bool
-    {
-        if (is_array($dimension)) {
-            for ($i = 0; $i < count($dimension); $i++) {
-                if (!array_key_exists($dimension[$i], $this->dimensions)) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        return array_key_exists($dimension, $this->dimensions);
-    }
-
-    /**
      * It returns the optimized if for given dimension if any, or
      * it returns the original image and logs the missing optimized
      * image to the log file.
@@ -171,6 +154,7 @@ class Picasso
         // and return the original image
         if (is_null($optimizedImage)) {
             Log::info("Image not optimized: $image");
+
             return Storage::disk($disk)->url($image);
         }
 
