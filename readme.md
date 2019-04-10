@@ -157,7 +157,7 @@ Now from the command line you can call `php artisan picasso:article-optimize` wh
 From your view files do:
 
 ```
-<image src="{{ asset(Picasso::get($article->image, 'news_small')) }}" />
+<image src="{{ Picasso::get($article->image, 'news_small') }}" />
 ```
 
 This line will retrieve the optimized image URL or if the optimized images does not exist it will fallback to the original image with a message in the log file saying that an unoptimized image has been used.
