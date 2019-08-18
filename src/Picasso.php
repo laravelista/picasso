@@ -12,12 +12,14 @@ class Picasso
     protected $dimensions;
     protected $manager;
     protected $quality;
+    protected $format;
 
     public function __construct(ImageManager $manager)
     {
         $this->manager = $manager;
         $this->dimensions = config('picasso.dimensions');
         $this->quality = config('picasso.quality');
+        $this->format = config('picasso.format');
     }
 
     /**
@@ -84,7 +86,7 @@ class Picasso
                 Arr::get($this->dimensions, $dimension . '.width'),
                 Arr::get($this->dimensions, $dimension . '.height')
             )
-            ->encode('jpg', $this->quality)
+            ->encode($this->getDimensionFormat($dimension), $this->getDimensionQuality($dimension))
             ->__toString();
 
         $optimizedImageName = $this->getOptimizedImageName($image, $dimension);
@@ -92,6 +94,36 @@ class Picasso
         $this->saveToStorage($optimizedImageName, $optimizedImage, $disk);
 
         $this->saveToDatabase($image, $dimension, $optimizedImageName);
+    }
+
+    /**
+     * It returns the format for the dimension or the global format.
+     *
+     * @param string $dimension
+     * @return string
+     */
+    protected function getDimensionFormat(string $dimension)
+    {
+        if (Arr::has($this->dimensions, $dimension . 'format')) {
+            return Arr::get($this->dimensions, $dimension . 'format');
+        }
+
+        return $this->format;
+    }
+
+    /**
+     * It returns the quality for the dimension or the global quality.
+     *
+     * @param string $dimension
+     * @return integer
+     */
+    protected function getDimensionQuality(string $dimension)
+    {
+        if (Arr::has($this->dimensions, $dimension . 'quality')) {
+            return Arr::get($this->dimensions, $dimension . 'quality');
+        }
+
+        return $this->quality;
     }
 
     /**
@@ -112,7 +144,7 @@ class Picasso
      */
     protected function getOptimizedImageName(string $image, string $dimension): string
     {
-        return "$image-$dimension.jpg";
+        return "$image-$dimension.{$this->getDimensionFormat($dimension)}";
     }
 
     /**
@@ -177,5 +209,31 @@ class Picasso
 
         // delete from database
         $images->delete();
+    }
+
+    /**
+     * @param string $image
+     * @param string|array $dimension
+     * @param string|null $disk
+     */
+    public function drop(string $image, $dimension, string $disk = null)
+    {
+        if (is_array($dimension)) {
+
+            for ($i = 0; $i < count($dimension); $i++) {
+                $this->drop($image, $dimension[$i], $disk);
+            }
+
+            return;
+        }
+
+        // get optimized images for image
+        $image = Image::where('original_image', $image)->where('dimension_name', $dimension)->get();
+
+        // delete from storage
+        Storage::disk($disk)->delete($image->optimized_image);
+
+        // delete from database
+        $image->delete();
     }
 }

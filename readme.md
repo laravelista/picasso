@@ -14,7 +14,8 @@ To reduce site size and improve site loading time, this packages enables you to:
 - quickly change the image dimension and update all, subset or a single image with optimized size
 - implement this package in any phase of your application
 - to use this package on your whole site or just a part of it
-- set image quality (default **60**)
+- set global or individual image quality (default **60**)
+- set global or individual image format (default **webp**)
 
 ### How it works
 
