@@ -186,3 +186,19 @@ The last parameter is the disk on which to perform this operation.
 This method retrieves the optimizes image for given original image path and desired dimension.
 
 The last parameter is the disk on which to perform this operation.
+
+## Laravelista Sponsors & Backers
+
+I would like to extend my thanks to the following sponsors & backers for funding my open-source journey. If you are interested in becoming a sponsor or backer, please visit the Laravelista [Backers page](https://laravelista.hr/backers).
+
+## Contributing
+
+Thank you for considering contributing to Picasso! The contribution guide can be found on the [Laravelista website](https://laravelista.hr/contributing).
+
+## Code of Conduct
+
+In order to ensure that the Laravelista community is welcoming to all, please review and abide by the [Code of Conduct](https://laravelista.hr/code-of-conduct).
+
+## License
+
+Picasso is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
