@@ -19,13 +19,13 @@ To reduce site size and improve site loading time, this packages enables you to:
 
 ### How it works
 
-In the config file you define the dimension width, height and unique name for that dimension. In your controller call `$picasso->optimize('images/image.jpg', ['home_slideshow_large', 'home_slideshow_thumbnail']')`. This method takes the original image, optimizes it according to the entered dimensions and quality, saves it to storage and saves the record to a database table.
+In the config file you define the dimension width and height, (format and quality are optional) and unique name for that dimension. In your controller call `$picasso->optimize('images/image.jpg', ['home_slideshow_large', 'home_slideshow_thumbnail']')`. This method takes the original image, optimizes it according to the entered dimensions, saves it to storage and saves the record to the manifest file
 
-Later, when you call `Picasso::get('images/image.jpg', 'home_slideshow_large')` you will get the optimized image if it exists or the original as fallback.
+Later, when you call `Picasso::get('images/image.jpg', 'home_slideshow_large')` you will get the optimized image.
 
 ### Benefits
 
-You can keep your original user uploaded images untouched (2MB or more). This package will create new optimized images and keep reference of the original and optimized in the database.
+You can keep your original user uploaded images untouched (2MB or more). This package will create new optimized images and keep reference of the original and optimized in the manifest file.
 
 Your page will load faster because it will have less MB to download because the images will be smaller. I have managed to reduce image size from 2.4MB to 700Kb, just by implementing this package as an addon later in the development phase.
 
@@ -41,12 +41,6 @@ Publish the config file `picasso.php` to your `/config` directory:
 
 ```
 php artisan vendor:publish --provider="Laravelista\Picasso\ServiceProvider" --tag=config
-```
-
-Migrate the database with:
-
-```
-php artisan migrate
 ```
 
 Installation complete!
@@ -82,7 +76,7 @@ public function store(Request $request, Picasso $picasso)
 
 ### Update method
 
-When the user is going to replace the existing image with a new one,we have to first purge all records from storage and database of the old image and then optimize the new image:
+When the user is going to replace the existing image with a new one, we have to first purge all records from storage and manifest file of the old image and then optimize the new image:
 
 ```
 use Laravelista\Picasso\Picasso;
@@ -97,7 +91,7 @@ public function update(Request $request, Article $article, Picasso $picasso)
         Storage::delete($article->image);
 
         // delete all optimized images for old image
-        $picasso->purge($article->image);
+        $picasso->drop($article->image, ['news_small', 'news_cover']);
 
         // save new original image to storage and retrieve the path
         $article->image = $request->image->store('images');
@@ -112,7 +106,7 @@ public function update(Request $request, Article $article, Picasso $picasso)
 
 ### Destroy method
 
-When deleting a record which has optimizes images, be sure to delete optimized image also to reduce unused files:
+When deleting a record which has optimized images, be sure to delete optimized image also to reduce unused files:
 
 ```
 use Laravelista\Picasso\Picasso;
@@ -161,11 +155,11 @@ From your view files do:
 <image src="{{ Picasso::get($article->image, 'news_small') }}" />
 ```
 
-This line will retrieve the optimized image URL or if the optimized images does not exist it will fallback to the original image with a message in the log file saying that an unoptimized image has been used.
+This line will retrieve the optimized image URL.
 
 ## API
 
-For now, there are only three main method in Picasso:
+For now, there are only four main methods in Picasso:
 
 ### `optimize(string|array $image, string|array $dimension, string $disk = null)`
 
@@ -173,19 +167,26 @@ This method creates optimized images in desired dimensions for given images or i
 
 It accepts an array of image paths or a single image path.
 It accepts an array of valid dimensions (as defined in the configuration) or a single dimension
+The last parameter is the disk where to save the optimized image.
+
+### `get(string $image, string $dimension, string $disk = null)`
+
+This method retrieves the optimized image for given original image path and desired dimension.
+
+The last parameter is the disk on which to perform this operation.
+
+### `drop(string $image, string|array $dimension, string $disk = null)`
+
+Thi method deletes optimized images from storage for given image path and dimension or dimensions.
+
 The last parameter is the disk on which to perform this operation.
 
 ### `purge(string $image, string $disk = null)`
 
-Thi method deletes all otpimizes images from storage and database for given image path.
+Thi method deletes all optimized images from storage for given image path.
 
 The last parameter is the disk on which to perform this operation.
 
-### `get(string $image, string $dimension, string $disk = null)`
-
-This method retrieves the optimizes image for given original image path and desired dimension.
-
-The last parameter is the disk on which to perform this operation.
 
 ## Laravelista Sponsors & Backers
 

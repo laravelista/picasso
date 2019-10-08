@@ -45,8 +45,25 @@ class Manifest
         $this->save();
     }
 
-    public function getRecord($image, $dimension)
+    public function delete(string $image, string $dimension)
     {
-        return Arr::get($this->manifest, "{$image}.{$dimension}");
+        unset($this->manifest[$image][$dimension]);
+    }
+
+    public function get(string $image, string $dimension = null)
+    {
+        if (is_null($dimension)) {
+            if (!array_key_exists($image, $this->manifest)) {
+                return null;
+            }
+
+            return $this->manifest[$image];
+        }
+
+        if (!array_key_exists($image, $this->manifest) or !array_key_exists($dimension, $this->manifest[$image])) {
+            return null;
+        }
+
+        return $this->manifest[$image][$dimension];
     }
 }

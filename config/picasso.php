@@ -45,5 +45,18 @@ return [
      */
     'format' => 'webp',
 
+    /**
+     * This the the place where you should keep your original full size images.
+     *
+     * In your Laravel application in `config/filesystem.php`, create a new disk under `disks`:
+     *
+     *      'originals' => [
+     *          'driver' => 'local',
+     *          'root' => storage_path('app/originals'),
+     *      ],
+     *
+     * Or replace with the disk name where your original are located.
+     *
+     */
     'disk' => 'originals'
 ];

@@ -97,15 +97,58 @@ class Picasso
     {
         $this->dimensions->hasOrFail($dimension);
 
-        dd($image, $dimension);
-
-        $record = $this->manifest->getRecord($image, $dimension);
+        $record = $this->manifest->get($image, $dimension);
 
         if (is_null($record)) {
-            // something
-            throw new \Exception("Image not found");
+            throw new \Exception("Image not found! Image: {$image} Dimension: {$dimension} Disk: {$disk}");
         }
 
         return $this->storage->url($record['src'], $disk);
+    }
+
+    /**
+     * @param string $image
+     * @param string|array $dimension
+     * @param string|null $disk
+     */
+    public function drop(string $image, $dimension, string $disk = null)
+    {
+        if (is_array($dimension)) {
+
+            for ($i = 0; $i < count($dimension); $i++) {
+                $this->drop($image, $dimension[$i], $disk);
+            }
+
+            return;
+        }
+
+        $record = $this->manifest->get($image, $dimension);
+
+        if (is_null($record)) {
+            throw new \Exception("Record not found! Image: {$image} Dimension: {$dimension} Disk: {$disk}");
+        }
+
+        $this->storage->delete($record['src'], $disk);
+
+        $this->manifest->delete($image, $dimension);
+    }
+
+    /**
+     * @param string $image
+     * @param string|null $disk
+     */
+    public function purge(string $image, string $disk = null)
+    {
+        $records = $this->manifest->get($image);
+
+        if (is_null($records)) {
+            throw new \Exception("Records not found! Image: {$image} Disk: {$disk}");
+        }
+
+        foreach ($records as $dimension => $record) {
+            $this->storage->delete($record['src'], $disk);
+
+            $this->manifest->delete($image, $dimension);
+        }
     }
 }

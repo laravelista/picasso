@@ -51,4 +51,9 @@ class Storage
     {
         return IlluminateStorage::disk($disk)->url($path);
     }
+
+    public function delete($path, $disk = null)
+    {
+        IlluminateStorage::disk($disk)->delete($path);
+    }
 }
