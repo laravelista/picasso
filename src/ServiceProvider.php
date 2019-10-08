@@ -8,8 +8,6 @@ class ServiceProvider extends LaravelServiceProvider
 {
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
-
         $this->publishes([
             __DIR__ . '/../config/picasso.php' => config_path('picasso.php'),
         ], 'config');

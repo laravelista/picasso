@@ -43,5 +43,20 @@ return [
      * For WebP support GD driver must be used with PHP 5 >= 5.5.0 or PHP 7 in order to use imagewebp().
      * If Imagick is used, it must be compiled with libwebp for WebP support.
      */
-    'format' => 'webp'
+    'format' => 'webp',
+
+    /**
+     * This the the place where you should keep your original full size images.
+     *
+     * In your Laravel application in `config/filesystem.php`, create a new disk under `disks`:
+     *
+     *      'originals' => [
+     *          'driver' => 'local',
+     *          'root' => storage_path('app/originals'),
+     *      ],
+     *
+     * Or replace with the disk name where your original are located.
+     *
+     */
+    'disk' => 'originals'
 ];
