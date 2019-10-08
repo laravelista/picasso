@@ -1,0 +1,11 @@
+{
+    "images/destinations/cities/zadar/index.jpg": {
+        "destinations.cover": {
+            "src": "images/destinations/cities/zadar/index.jpg-destinations.cover.webp",
+            "format": "webp",
+            "quality": 60,
+            "width": 1600,
+            "height": 1067
+        }
+    }
+}

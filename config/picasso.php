@@ -43,5 +43,7 @@ return [
      * For WebP support GD driver must be used with PHP 5 >= 5.5.0 or PHP 7 in order to use imagewebp().
      * If Imagick is used, it must be compiled with libwebp for WebP support.
      */
-    'format' => 'webp'
+    'format' => 'webp',
+
+    'disk' => 'originals'
 ];
