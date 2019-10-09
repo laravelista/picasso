@@ -48,6 +48,8 @@ class Manifest
     public function delete(string $image, string $dimension)
     {
         unset($this->manifest[$image][$dimension]);
+
+        $this->save();
     }
 
     public function get(string $image, string $dimension = null)
