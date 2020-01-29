@@ -187,18 +187,17 @@ Thi method deletes all optimized images from storage for given image path.
 
 The last parameter is the disk on which to perform this operation.
 
+## Sponsors & Backers
 
-## Laravelista Sponsors & Backers
-
-I would like to extend my thanks to the following sponsors & backers for funding my open-source journey. If you are interested in becoming a sponsor or backer, please visit the Laravelista [Backers page](https://laravelista.hr/backers).
+I would like to extend my thanks to the following sponsors & backers for funding my open-source journey. If you are interested in becoming a sponsor or backer, please visit the [Backers page](https://mariobasic.com/backers).
 
 ## Contributing
 
-Thank you for considering contributing to Picasso! The contribution guide can be found on the [Laravelista website](https://laravelista.hr/contributing).
+Thank you for considering contributing to Picasso! The contribution guide can be found [Here](https://mariobasic.com/contributing).
 
 ## Code of Conduct
 
-In order to ensure that the Laravelista community is welcoming to all, please review and abide by the [Code of Conduct](https://laravelista.hr/code-of-conduct).
+In order to ensure that the open-source community is welcoming to all, please review and abide by the [Code of Conduct](https://mariobasic.com/code-of-conduct).
 
 ## License
 
