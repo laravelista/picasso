@@ -139,11 +139,7 @@ class Picasso
      */
     public function purge(string $image, string $disk = null)
     {
-        $records = $this->manifest->get($image);
-
-        if (is_null($records)) {
-            throw new \Exception("Records not found! Image: {$image} Disk: {$disk}");
-        }
+        $records = $this->manifest->get($image) ?? [];
 
         foreach ($records as $dimension => $record) {
             $this->storage->delete($record['src'], $disk);
