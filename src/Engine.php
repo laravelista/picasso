@@ -7,17 +7,12 @@ use Intervention\Image\ImageManager;
 
 class Engine
 {
-    protected ImageManager $manager;
-    protected Dimensions $dimensions;
-
     protected int $quality;
+
     protected string $format;
 
-    public function __construct(ImageManager $manager, Dimensions $dimensions)
+    public function __construct(protected ImageManager $manager, protected Dimensions $dimensions)
     {
-        $this->manager = $manager;
-        $this->dimensions = $dimensions;
-
         $this->quality = Config::get('picasso.quality');
         $this->format = Config::get('picasso.format');
     }
@@ -29,7 +24,7 @@ class Engine
 
     public function getQuality(string $dimension): int
     {
-        return $this->dimensions->getQuality($dimension) ?? $this->quality;
+        return $this->dimensions->getQuality(dimension: $dimension) ?? $this->quality;
     }
 
     public function setFormat(string $format): void
@@ -39,25 +34,20 @@ class Engine
 
     public function getFormat(string $dimension): string
     {
-        return $this->dimensions->getFormat($dimension) ?? $this->format;
+        return $this->dimensions->getFormat(dimension: $dimension) ?? $this->format;
     }
 
-    /**
-     * @param string $image
-     * @param string $dimension
-     * @return string
-     */
     public function manipulate(string $image, string $dimension): string
     {
         return $this->manager
-            ->make($image)
+            ->make(data: $image)
             ->fit(
-                $this->dimensions->getWidth($dimension),
-                $this->dimensions->getHeight($dimension)
+                width: $this->dimensions->getWidth(dimension: $dimension),
+                height: $this->dimensions->getHeight(dimension: $dimension)
             )
             ->encode(
-                $this->getFormat($dimension),
-                $this->getQuality($dimension)
+                format: $this->getFormat(dimension: $dimension),
+                quality: $this->getQuality(dimension: $dimension)
             )
             ->__toString();
     }

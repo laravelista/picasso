@@ -15,9 +15,12 @@ class Storage
 
     public function __construct()
     {
-        $this->disk = Config::get('picasso.disk');
+        $this->disk = Config::get(key: 'picasso.disk');
     }
 
+    /**
+     * It sets the disk.
+     */
     public function disk(string $disk): void
     {
         $this->disk = $disk;
@@ -26,46 +29,31 @@ class Storage
     /**
      * It gets the image content from the disk
      * where the originals are located.
-     *
-     * @param string $path
-     *
-     * @return string
      */
-    public function get($path): string
+    public function get(string $path): string
     {
-        return IlluminateStorage::disk($this->disk)->get($path);
+        return IlluminateStorage::disk(name: $this->disk)->get(path: $path);
     }
 
     /**
      * It saves the image to the specified disk or
      * to the default application disk.
-     *
-     * @param string $name
-     * @param string $content
-     * @param string|null $disk
-     *
-     * @return void
      */
-    public function put(string $name, string $content, $disk = null): void
+    public function put(string $name, string $content, ?string $disk = null): void
     {
-        IlluminateStorage::disk($disk)->put($name, $content);
+        IlluminateStorage::disk(name: $disk)->put(
+            path: $name,
+            contents: $content
+        );
     }
 
-    /**
-     * @param string $path
-     * @param null|string $disk
-     */
     public function url(string $path, ?string $disk = null): string
     {
-        return IlluminateStorage::disk($disk)->url($path);
+        return IlluminateStorage::disk(name: $disk)->url($path);
     }
 
-    /**
-     * @param string $path
-     * @param null|string $disk
-     */
     public function delete(string $path, ?string $disk = null): void
     {
-        IlluminateStorage::disk($disk)->delete($path);
+        IlluminateStorage::disk(name: $disk)->delete(paths: $path);
     }
 }

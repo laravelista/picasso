@@ -8,16 +8,19 @@ class ServiceProvider extends LaravelServiceProvider
 {
     public function boot(): void
     {
-        $this->publishes([
-            __DIR__ . '/../config/picasso.php' => $this->app->configPath('picasso.php'),
-        ], 'config');
+        $this->publishes(
+            paths: [
+                __DIR__ . '/../config/picasso.php' => $this->app->configPath(path: 'picasso.php'),
+            ],
+            groups: 'config'
+        );
     }
 
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/picasso.php',
-            'picasso'
+            path: __DIR__ . '/../config/picasso.php',
+            key: 'picasso'
         );
     }
 }

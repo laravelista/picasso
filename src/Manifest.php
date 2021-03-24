@@ -8,21 +8,20 @@ class Manifest
 {
     protected array $manifest = [];
 
-    protected Dimensions $dimensions;
-
     public const FILENAME = 'picasso-manifest.json';
 
-    public function __construct(Dimensions $dimensions)
+    public function __construct(protected Dimensions $dimensions)
     {
-        $this->dimensions = $dimensions;
-
         $this->manifest = $this->load();
     }
 
     protected function load(): array
     {
-        if (IlluminateStorage::disk('local')->has(self::FILENAME)) {
-            return json_decode(IlluminateStorage::disk('local')->get(self::FILENAME), true);
+        if (IlluminateStorage::disk(name: 'local')->has(self::FILENAME)) {
+            return json_decode(
+                IlluminateStorage::disk(name: 'local')->get(path: self::FILENAME),
+                true
+            );
         }
 
         return [];
@@ -30,17 +29,25 @@ class Manifest
 
     protected function save(): void
     {
-        IlluminateStorage::disk('local')->put(self::FILENAME, json_encode($this->manifest));
+        IlluminateStorage::disk(name: 'local')->put(
+            path: self::FILENAME,
+            contents: json_encode(value: $this->manifest)
+        );
     }
 
-    public function update(string $image, string $dimension, string $optimized_image, string $format, int $quality): void
-    {
+    public function update(
+        string $image,
+        string $dimension,
+        string $optimized_image,
+        string $format,
+        int $quality
+    ): void {
         $this->manifest[$image][$dimension] = [
             "src" => $optimized_image,
             "format" => $format,
             "quality" => $quality,
-            "width" => $this->dimensions->getWidth($dimension),
-            "height" => $this->dimensions->getHeight($dimension)
+            "width" => $this->dimensions->getWidth(dimension: $dimension),
+            "height" => $this->dimensions->getHeight(dimension: $dimension)
         ];
 
         $this->save();
@@ -53,17 +60,28 @@ class Manifest
         $this->save();
     }
 
-    public function get(string $image, string $dimension = null): null|array
+    public function get(string $image, ?string $dimension = null): ?array
     {
         if (is_null($dimension)) {
-            if (!array_key_exists($image, $this->manifest)) {
+            if (!array_key_exists(
+                key: $image,
+                search: $this->manifest
+            )) {
                 return null;
             }
 
             return $this->manifest[$image];
         }
 
-        if (!array_key_exists($image, $this->manifest) or !array_key_exists($dimension, $this->manifest[$image])) {
+        if (!array_key_exists(
+            key: $image,
+            search: $this->manifest
+        ) or
+            !array_key_exists(
+                key: $dimension,
+                search: $this->manifest[$image]
+            )
+        ) {
             return null;
         }
 
