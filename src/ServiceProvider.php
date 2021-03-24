@@ -6,10 +6,10 @@ use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
 
 class ServiceProvider extends LaravelServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/../config/picasso.php' => config_path('picasso.php'),
+            __DIR__ . '/../config/picasso.php' => $this->app->configPath('picasso.php'),
         ], 'config');
     }
 

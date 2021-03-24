@@ -187,6 +187,19 @@ Thi method deletes all optimized images from storage for given image path.
 
 The last parameter is the disk on which to perform this operation.
 
+## Development
+
+```bash
+# Install dependencies
+composer install
+
+# Run Psalm
+vendor/bin/psalm
+
+# Format code
+vendor/bin/php-cs-fixer fix
+```
+
 ## Sponsors & Backers
 
 I would like to extend my thanks to the following sponsors & backers for funding my open-source journey. If you are interested in becoming a sponsor or backer, please visit the [Backers page](https://mariobasic.com/backers).

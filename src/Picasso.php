@@ -19,22 +19,24 @@ class Picasso
 
     /**
      * Use this to set the input disk dynamically.
+     *
+     * @return void
      */
-    public function setStorageDisk(string $disk)
+    public function setStorageDisk(string $disk): void
     {
-        $this->storage->setDisk($disk);
+        $this->storage->disk($disk);
     }
 
     /**
      * @param string|array $image
      * @param string|array $dimension
      * @param string|null $disk
-     * @return null
+     *
+     * @return void
      */
-    public function optimize($image, $dimension, string $disk = null)
+    public function optimize($image, $dimension, string $disk = null): void
     {
         if (is_array($image)) {
-
             for ($i = 0; $i < count($image); $i++) {
                 $this->optimize($image[$i], $dimension, $disk);
             }
@@ -54,7 +56,7 @@ class Picasso
         }
     }
 
-    protected function process(string $image, string $dimension, $disk = null)
+    protected function process(string $image, string $dimension, ?string $disk = null): void
     {
         // Get image from storage for manipulation.
         $raw_image = $this->storage->get($image);
@@ -68,7 +70,9 @@ class Picasso
 
         // Update manifest of optimized images.
         $this->manifest->update(
-            $image, $dimension, $optimized_image_name,
+            $image,
+            $dimension,
+            $optimized_image_name,
             $this->engine->getFormat($dimension),
             $this->engine->getQuality($dimension)
         );
@@ -110,11 +114,12 @@ class Picasso
      * @param string $image
      * @param string|array $dimension
      * @param string|null $disk
+     *
+     * @return void
      */
     public function drop(string $image, $dimension, string $disk = null)
     {
         if (is_array($dimension)) {
-
             for ($i = 0; $i < count($dimension); $i++) {
                 $this->drop($image, $dimension[$i], $disk);
             }
@@ -136,8 +141,10 @@ class Picasso
     /**
      * @param string $image
      * @param string|null $disk
+     *
+     * @return void
      */
-    public function purge(string $image, string $disk = null)
+    public function purge(string $image, string $disk = null): void
     {
         $records = $this->manifest->get($image) ?? [];
 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="4.6.4@97fe86c4e158b5a57c5150aa5055c38b5a809aab">
+  <file src="src/Manifest.php">
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>has</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Storage.php">
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>url</code>
+    </UndefinedInterfaceMethod>
+  </file>
+</files>

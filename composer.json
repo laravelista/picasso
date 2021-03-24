@@ -6,8 +6,8 @@
     "authors": [
         {
             "name": "Mario Bašić",
-            "email": "mario@laravelista.hr",
-            "homepage": "https://laravelista.hr"
+            "email": "mario@laravelista.com",
+            "homepage": "https://mariobasic.com"
         }
     ],
     "autoload": {
@@ -16,10 +16,16 @@
         }
     },
     "require": {
-        "illuminate/support": "^5.0|^6.0|^7.0",
-        "illuminate/database": "^5.0|^6.0|^7.0",
-        "intervention/image": "^2.4"
+        "illuminate/support": "^8.0",
+        "illuminate/database": "^8.0",
+        "illuminate/filesystem": "^8.0",
+        "intervention/image": "^2.5",
+        "php": "^8.0"
     },
+    "require-dev": {
+        "vimeo/psalm": "^4.6",
+        "friendsofphp/php-cs-fixer": "^2.18"
+      },
     "extra": {
         "laravel": {
             "providers": [

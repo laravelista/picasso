@@ -2,14 +2,15 @@
 
 namespace Laravelista\Picasso;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage as IlluminateStorage;
 
 class Manifest
 {
-    protected $manifest = [];
+    protected array $manifest = [];
 
-    const FILENAME = 'picasso-manifest.json';
+    protected Dimensions $dimensions;
+
+    public const FILENAME = 'picasso-manifest.json';
 
     public function __construct(Dimensions $dimensions)
     {
@@ -27,12 +28,12 @@ class Manifest
         return [];
     }
 
-    protected function save()
+    protected function save(): void
     {
         IlluminateStorage::disk('local')->put(self::FILENAME, json_encode($this->manifest));
     }
 
-    public function update(string $image, string $dimension, string $optimized_image, string $format, int $quality)
+    public function update(string $image, string $dimension, string $optimized_image, string $format, int $quality): void
     {
         $this->manifest[$image][$dimension] = [
             "src" => $optimized_image,
@@ -45,14 +46,14 @@ class Manifest
         $this->save();
     }
 
-    public function delete(string $image, string $dimension)
+    public function delete(string $image, string $dimension): void
     {
         unset($this->manifest[$image][$dimension]);
 
         $this->save();
     }
 
-    public function get(string $image, string $dimension = null)
+    public function get(string $image, string $dimension = null): null|array
     {
         if (is_null($dimension)) {
             if (!array_key_exists($image, $this->manifest)) {
