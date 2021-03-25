@@ -40,14 +40,14 @@ class Engine
     public function manipulate(string $image, string $dimension): string
     {
         return $this->manager
-            ->make(data: $image)
+            ->make($image)
             ->fit(
-                width: $this->dimensions->getWidth(dimension: $dimension),
-                height: $this->dimensions->getHeight(dimension: $dimension)
+                $this->dimensions->getWidth(dimension: $dimension),
+                $this->dimensions->getHeight(dimension: $dimension)
             )
             ->encode(
-                format: $this->getFormat(dimension: $dimension),
-                quality: $this->getQuality(dimension: $dimension)
+                $this->getFormat(dimension: $dimension),
+                $this->getQuality(dimension: $dimension)
             )
             ->__toString();
     }

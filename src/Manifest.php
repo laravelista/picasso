@@ -63,24 +63,15 @@ class Manifest
     public function get(string $image, ?string $dimension = null): ?array
     {
         if (is_null($dimension)) {
-            if (!array_key_exists(
-                key: $image,
-                search: $this->manifest
-            )) {
+            if (!array_key_exists($image, $this->manifest)) {
                 return null;
             }
 
             return $this->manifest[$image];
         }
 
-        if (!array_key_exists(
-            key: $image,
-            search: $this->manifest
-        ) or
-            !array_key_exists(
-                key: $dimension,
-                search: $this->manifest[$image]
-            )
+        if (!array_key_exists($image, $this->manifest) or
+            !array_key_exists($dimension, $this->manifest[$image])
         ) {
             return null;
         }
